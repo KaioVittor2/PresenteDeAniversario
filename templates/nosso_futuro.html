@@ -1,0 +1,496 @@
+<!-- templates/nosso_futuro.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Timeline arrows */
+    .arrow-btn { @apply absolute top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white px-3 py-2 rounded-full shadow-lg; }
+    /* Carta flip */
+    .card { perspective: 1000px; }
+    .card-inner { @apply relative w-64 h-40 transition-transform duration-700 transform-style-preserve-3d cursor-pointer; }
+    .card.flipped .card-inner { transform: rotateY(180deg); }
+    .card-face { @apply absolute w-full h-full backface-hidden rounded-lg shadow-lg overflow-hidden; }
+    .card-back { @apply transform rotateY(180deg) bg-white/90 p-4; }
+    /* Modal */
+    .modal { @apply fixed inset-0 bg-black/50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300; }
+    .modal.open { @apply opacity-100 pointer-events-auto; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gradient-to-b from-pink-50 to-purple-50">
+  <!-- Navbar -->
+  <header class="bg-white bg-opacity-70 shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="bg-pink-100 text-pink-900 px-6 py-4 flex justify-between items-center shadow">
+            <div class="text-2xl font-bold">💌 Nosso Cantinho</div>
+            <div class="flex gap-2 items-center">
+              <button onclick="previousMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏮</button>
+              <button onclick="startMusic()" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full shadow text-white font-semibold text-sm">Tocar nossa música 💖</button>
+              <button onclick="nextMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏭</button>
+            </div>
+          </nav>          
+      <ul class="flex space-x-4 text-pink-700 font-medium">
+        <li><a href="/" class="hover:underline">Início</a></li>
+        <li><a href="/linha-do-tempo" class="hover:underline font-semibold">Linha do Tempo</a></li>
+        <li><a href="/cartas" class="hover:underline">Cartas</a></li>
+        <li><a href="/playlists" class="hover:underline">Playlists</a></li>
+        <li><a href="/nosso-futuro" class="hover:underline">Nosso Futuro</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="flex-grow space-y-32 p-6">
+    <!-- 1. Linha do Tempo Interativa -->
+    <section id="futuro-timeline" class="relative py-20">
+        <h2 class="text-4xl text-pink-700 font-bold text-center mb-8">🕰️ Nossa Linha do Tempo</h2>
+        <div class="relative">
+          <button id="tl-prev" class="arrow-btn left-4">◀️</button>
+          <div id="timeline" class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-16 py-4">
+            
+            <!-- 2026 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🏡 2026</div>
+              <div class="font-bold text-pink-600 mb-2">Nossa casa dos sonhos</div>
+              <p>Um lar com varanda, café fresco e nossos gatinhos ronronando no sofá.</p>
+            </div>
+            
+            <!-- 2027 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">✈️ 2027</div>
+              <div class="font-bold text-pink-600 mb-2">Viagem ao Rio de Janeiro</div>
+              <p>Curtir uma praia juntos, jantar naquele lanção carióca e ver o Cristo Redentor.</p>
+            </div>
+            
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+                <div class="text-xl font-semibold mb-2">🏡 2028</div>
+                <div class="font-bold text-pink-600 mb-2">Nossa casa dos sonhos</div>
+                <p>Um lar com varanda, café fresco e nossos gatinhos ronronando no sofá.</p>
+              </div>
+
+            <!-- 2028 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">💍 2029</div>
+              <div class="font-bold text-pink-600 mb-2">Pedido de Casamento</div>
+              <p>Um momento surpresa, apenas nós dois, e um “sim” inesquecível.</p>
+            </div>
+            
+            <!-- 2030 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">👶 2031</div>
+              <div class="font-bold text-pink-600 mb-2">Bem-vindo, baby!</div>
+              <p>Nosso pequeno Toinho, trazendo ainda mais amor à nossa família.</p>
+            </div>
+            
+            <!-- 2032 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🔄 2032</div>
+              <div class="font-bold text-pink-600 mb-2">Renovação de Votos</div>
+              <p>Celebrar nosso amor ao pôr do sol, rodeados de amigos e família.</p>
+            </div>
+      
+            <!-- 2035 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🏔️ 2035</div>
+              <div class="font-bold text-pink-600 mb-2">Lua de Mel nos Alpes</div>
+              <p>Neve, chalé aconchegante e chocolate quente compartilhado na lareira.</p>
+            </div>
+      
+            <!-- 2038 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🎓 2038</div>
+              <div class="font-bold text-pink-600 mb-2">Formatura do Nosso Filho</div>
+              <p>Ver o orgulho nos olhos dele enquanto caminha para receber o diploma.</p>
+            </div>
+      
+            <!-- 2040 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🌍 2040</div>
+              <div class="font-bold text-pink-600 mb-2">Volta ao Mundo</div>
+              <p>Descobrindo novas culturas, provando cada iguaria e colecionando histórias.</p>
+            </div>
+      
+            <!-- 2045 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">🥂 2045</div>
+              <div class="font-bold text-pink-600 mb-2">Bodas de Prata</div>
+              <p>25 anos de amor intenso, brindando cada conquista ao seu lado.</p>
+            </div>
+      
+            <!-- 2050 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">👵👴 2050</div>
+              <div class="font-bold text-pink-600 mb-2">Aposentadoria na Praia</div>
+              <p>Manhãs preguiçosas à beira-mar e histórias compartilhadas no pôr do sol.</p>
+            </div>
+      
+            <!-- 2055 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">👶‍👵 2055</div>
+              <div class="font-bold text-pink-600 mb-2">Ser Avós Felizes</div>
+              <p>Ver nossos netos correndo pelo jardim, espalhando alegria em nossa casa.</p>
+            </div>
+      
+            <!-- 2060 -->
+            <div class="snap-center bg-white/80 p-6 rounded-xl shadow-lg min-w-[300px]">
+              <div class="text-xl font-semibold mb-2">❤️ 2060</div>
+              <div class="font-bold text-pink-600 mb-2">60 Anos Juntos</div>
+              <p>Uma vida inteira de cumplicidade, companheirismo e amor inabalável.</p>
+            </div>
+      
+          </div>
+          <button id="tl-next" class="arrow-btn right-4">▶️</button>
+        </div>
+      </section>
+      
+
+    <!-- 2. Joguinho de Escolhas Futuras -->
+    <section id="futuro-quiz" class="py-20 bg-white/80 p-8 rounded-xl shadow-lg">
+      <h2 class="text-4xl text-purple-700 font-bold text-center mb-6">🎮 Jogo de Escolhas</h2>
+      <div id="quiz-container" class="max-w-xl mx-auto text-center">
+        <div id="quiz-question" class="text-xl mb-4"></div>
+        <div id="quiz-options" class="space-y-4 mb-6"></div>
+        <button id="quiz-next" class="hidden bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full font-semibold">Próximo</button>
+        <div id="quiz-result" class="mt-6 text-lg italic"></div>
+      </div>
+    </section>
+
+    <section id="futuro-cartas" class="py-20 relative">
+        <h2 class="text-4xl text-blue-700 font-bold text-center mb-8">💌 Cartas do Futuro</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+          <!-- Carta 2026 -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em 2026</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Para nós, morando juntos: que cada dia seja cheio de carinho e risadas.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Carta 2028 -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em 2028</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Para nosso aniversário de 5 anos: obrigado por ser meu porto seguro.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Carta ao Viajar -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra ao viajar</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Quando estivermos desbravando o mundo: que a aventura nunca termine.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta 2030 -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em 2030</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Quando o nosso gatinho tiver filhotes: Um tem que se chamar Rakan outro se chamará Draven, para ter uma boa autoestima.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta 2035 -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em 20...sla quando</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Em nossas bodas de prata: 25 anos celebrando cada momento ao seu lado.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta Chuva -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em um dia de chuva</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Que mesmo sob gotas de chuva, encontremos sempre motivos para dançar.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta Casa Nova -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra ao comprar nossa casa</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>As chaves do nosso lar serão também as chaves dos nossos sonhos.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta Balão -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra ao voar de balão</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Do alto, veremos que nosso amor não tem limite nem altitude.</p>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Nova Carta 5º Aniversário -->
+          <div class="card" onclick="flipCard(this)">
+            <div class="card-inner">
+              <div class="card-face bg-white/90 flex items-center justify-center">
+                <span class="text-xl font-semibold">Abra em nosso 10º aniversário</span>
+              </div>
+              <div class="card-face card-back flex items-center justify-center">
+                <p>Obrigado por cada dia de amor e alegria. Que sejam infinitos!</p>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </section>
+      
+
+      <section id="futuro-mapa" class="py-20 bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl shadow-xl">
+        <h2 class="text-4xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-500 mb-8">🗺️ Mapa dos Sonhos</h2>
+      
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <!-- Nova York -->
+          <div onclick="openModal('modal-nova-york')" class="relative group cursor-pointer overflow-hidden rounded-xl shadow-md transform transition duration-500 hover:scale-105 hover:shadow-xl">
+            <img src="{{ url_for('static', filename='bg/NovaYork.jpg') }}" alt="Nova York" class="w-full h-48 object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-500"></div>
+            <div class="absolute bottom-0 w-full backdrop-blur-sm bg-white bg-opacity-60 px-4 py-2 flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span class="font-semibold text-green-800">Nova York</span>
+            </div>
+          </div>
+      
+          <!-- Japão -->
+          <div onclick="openModal('modal-japao')" class="relative group cursor-pointer overflow-hidden rounded-xl shadow-md transform transition duration-500 hover:scale-105 hover:shadow-xl">
+            <img src="{{ url_for('static', filename='bg/liberdade-sao-paulo.jpg') }}" alt="Japão" class="w-full h-48 object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-500"></div>
+            <div class="absolute bottom-0 w-full backdrop-blur-sm bg-white bg-opacity-60 px-4 py-2 flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span class="font-semibold text-green-800">Japão</span>
+            </div>
+          </div>
+      
+          <!-- Maldivas -->
+          <div onclick="openModal('modal-maldivas')" class="relative group cursor-pointer overflow-hidden rounded-xl shadow-md transform transition duration-500 hover:scale-105 hover:shadow-xl">
+            <img src="{{ url_for('static', filename='bg/caraguatatuba.jpg') }}" alt="Maldivas" class="w-full h-48 object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-500"></div>
+            <div class="absolute bottom-0 w-full backdrop-blur-sm bg-white bg-opacity-60 px-4 py-2 flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span class="font-semibold text-green-800">Maldivas</span>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Modals e Estilos -->
+        <style>
+          .modal { @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300; }
+          .modal.active { @apply opacity-100 pointer-events-auto; }
+        </style>
+      
+        <div id="modal-nova-york" class="modal" onclick="closeModal('modal-nova-york')">
+          <div class="bg-white rounded-2xl p-6 max-w-lg mx-4 transform transition-transform duration-300">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onclick="closeModal('modal-nova-york')">&times;</button>
+            <h3 class="text-2xl font-bold mb-2 flex items-center space-x-2 text-green-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span>Nova York</span>
+            </h3>
+            <p>Explorar a Big Apple juntos, das luzes de Times Square às caminhadas no Central Park.</p>
+          </div>
+        </div>
+      
+        <div id="modal-japao" class="modal" onclick="closeModal('modal-japao')">
+          <div class="bg-white rounded-2xl p-6 max-w-lg mx-4 transform transition-transform duration-300">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onclick="closeModal('modal-japao')">&times;</button>
+            <h3 class="text-2xl font-bold mb-2 flex items-center space-x-2 text-green-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span>Japão</span>
+            </h3>
+            <p>Saborear sushi autêntico, contemplar templos e aprender a dizer “arigatô” de mãos dadas.</p>
+          </div>
+        </div>
+      
+        <div id="modal-maldivas" class="modal" onclick="closeModal('modal-maldivas')">
+          <div class="bg-white rounded-2xl p-6 max-w-lg mx-4 transform transition-transform duration-300">
+            <button class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onclick="closeModal('modal-maldivas')">&times;</button>
+            <h3 class="text-2xl font-bold mb-2 flex items-center space-x-2 text-green-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4.5 8-10-3.582-10-8-10-8 4.5-8 10 8 10 8 10z"/>
+              </svg>
+              <span>Maldivas</span>
+            </h3>
+            <p>Relaxe em bangalôs sobre as águas cristalinas e brinde ao pôr do sol no nosso paraíso particular.</p>
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- 5. Votos do Futuro -->
+    <section id="futuro-votos" class="py-20">
+      <h2 class="text-4xl text-red-700 font-bold text-center mb-6">🔒 Votos do Futuro</h2>
+      <div class="max-w-2xl mx-auto text-center bg-white/80 p-8 rounded-xl shadow-lg">
+        <p id="voto-text" class="text-lg italic mb-6">Prometo sempre rir das suas piadas ruins.</p>
+        <button onclick="newVoto()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-semibold">Quero um novo voto 💌</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-600 bg-pink-50">
+    Nosso futuro é o melhor presente. Te amo! 💖
+  </footer>
+
+  <!-- Áudio de fundo e scripts -->
+  <audio id="bg-player"></audio>
+  <script>
+    // Áudio global
+    const playlist = {{ audio_playlist | tojson }};
+    let idx = parseInt(localStorage.getItem('audioIndex') || 0);
+    let time = parseFloat(localStorage.getItem('audioTime') || 0);
+    const player = document.getElementById('bg-player');
+    function startMusic() { player.src = playlist[idx]; player.currentTime = time; player.play().catch(() => {}); }
+    function nextMusic()  { idx=(idx+1)%playlist.length; player.src=playlist[idx]; player.play(); }
+    function previousMusic(){ idx=(idx-1+playlist.length)%playlist.length; player.src=playlist[idx]; player.play(); }
+    player.addEventListener('ended', nextMusic);
+    window.addEventListener('beforeunload', ()=>{ localStorage.setItem('audioIndex', idx); localStorage.setItem('audioTime', player.currentTime); });
+
+    // Timeline
+    const tl = document.getElementById('timeline');
+    document.getElementById('tl-prev').onclick = () => { tl.scrollBy({ left: -320, behavior: 'smooth' }); };
+    document.getElementById('tl-next').onclick = () => { tl.scrollBy({ left: 320, behavior: 'smooth' }); };
+
+    // Quiz
+    const quiz = [
+  // Perguntas originais
+  { q: "Onde vamos passar nossa lua de mel?", opts: ["Maldivas", "Disney", "Chalé na Serra"] },
+  { q: "Qual será o nome do nosso primeiro pet?", opts: ["Tonhu", "Fumaça", "Nina"] },
+  { q: "Se pudéssemos escolher nosso lar, seria?", opts: ["Moderna", "Casa de Praia", "Cabana na Montanha"] },
+
+  // Perguntas adicionais
+  { q: "Qual será nossa viagem de aventura?", opts: ["Safari na África", "Trilha no Peru", "Mergulho na Austrália"] },
+  { q: "Em qual cidade do mundo iremos morar por um ano?", opts: ["Tóquio", "Paris", "Barcelona"] },
+  { q: "Qual tradição de fim de semana criaremos juntos?", opts: ["Noite de jogos", "Caminhada ao nascer do sol", "Maratona de filmes"] },
+  { q: "Que habilidade nova aprenderemos juntos?", opts: ["Dança de salão", "Culinária", "bodybilrders"] },
+  { q: "Onde construiremos nossa casa de férias?", opts: ["Na montanha", "À beira do lago", "Num vinhedo"] },
+  { q: "Qual banda será nossa favorita para um show ao vivo?", opts: ["Artick Monkeys", "SZA", "Melanie Martins", "Doja Cat",] },
+  { q: "Qual será nossa atividade favorita de domingo?", opts: ["Jogar um lolzinho", "Café com chamego", "Churrasquinho de almoço"] },
+  { q: "Qual prato exótico iremos experimentar juntos?", opts: ["Camarão em São Sebastião", "Sushi no Paraiso", "Comida Indiana na Casa do Gui"] },
+  { q: "Em qual esporte iremos competir como casal?", opts: ["Corrida de revezamento", "Tênis de dupla", "Stand-up paddle", "soloduo"] },
+  { q: "Qual filme será nosso clássico de sessão pipoca?", opts: ["Palm Springs", "O Cavaleiro das trevas 2 e 3", "O Homem nas trevas", "Nós", "A Freira Virgem", "A Libertação", "Entrevista com o Demônio", "O poço", "O Candidato Honesto 1 e 2", "Parasita"] },
+  { q: "Qual palavra será nosso código secreto?", opts: ["Tonho", "Five or Five", "Zulalest"] },
+  { q: "Qual playlist tocará no nosso casamento?", opts: ["Acústico Romântico", "Musica de Casório", "Nossa playlist"] },
+  { q: "Quem de nós será o mais coruja de madrugada?", opts: ["Eu", "Você", "Ambos"] },
+  { q: "Qual será a nossa próxima janta juntos?", opts: ["Pizza Caseira", "Bife a Milanesa", "Espetinhos"] },
+  { q: "Em qual dia da semana teremos nosso jantar romântico?", opts: ["Sexta", "Sábado", "Domingo"] },
+  { q: "Qual será nosso apelido carinhoso um para o outro?", opts: ["Mozinhu e Mozão", "Meu Tonho", "Dono do PÉZZIIINNHUU"] },
+  { q: "Qual estilo de decoração teremos na sala de estar?", opts: ["Rústico", "Minimalista", "Maximalista"] },
+  { q: "Em qual próximo lugar celebraremos um Réveillon inesquecível?", opts: ["SJC", "SP", "Outra Cidade"] },
+  { q: "A Próxima partida vamos jogar com o que?", opts: ["Cait e Lux", "Soraka e Aphelios", "Samira e Karma", "Tankent e Senna"] },
+  { q: "Que animal selvagem veremos juntos num safari?", opts: ["Leões", "Elefantes", "Girafas"] },
+  { q: "Qual série será nossa próxima maratona (ou replay)?", opts: ["Balck mirror", "Arcane", "Doctor Who", "SherlockHomes", "Todo Mundo Odeia o Cris", "Steven Universe", ""] },
+];
+
+    let qi=0, answers=[];
+    const qEl=document.getElementById('quiz-question'), optsEl=document.getElementById('quiz-options'), nextBtn=document.getElementById('quiz-next'), resEl=document.getElementById('quiz-result');
+    function showQuiz(){
+      const cur=quiz[qi]; qEl.textContent=cur.q;
+      optsEl.innerHTML = cur.opts.map(o=>`<button class="block w-full bg-pink-100 hover:bg-pink-200 px-4 py-2 rounded-xl" onclick="selectOpt('${o}')">${o}</button>`).join('');
+      nextBtn.classList.add('hidden'); resEl.textContent='';
+    }
+    function selectOpt(o){ answers[qi]=o; nextBtn.classList.remove('hidden'); }
+    nextBtn.onclick = ()=>{
+      qi++;
+      if(qi<quiz.length) showQuiz();
+      else {
+        qEl.textContent='Resultado:';
+        optsEl.innerHTML='';
+        resEl.textContent = `Bom gosto`;      }
+    };
+    showQuiz();
+
+    // Cartas
+    window.flipCard = c => c.classList.toggle('flipped');
+
+    // Modal mapa
+    function openModal(id){ document.getElementById(id).classList.add('open'); }
+    function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+// Votos para o Futuro
+const votos = [
+  "Prometo sempre rir das suas piadas ruins.",
+  "Prometo segurar sua mão em todas as tempestades e gritar ‘Oh Denise, sai da live, filha!’ quando algo der errado.",
+  "Prometo apoiar seu orgulho e celebrar nosso amor.",
+  "Prometo não matar o Matheus quando ele aparecer sem avisar na nossa futura casa.",
+  "Prometo enfrentar qualquer bug na minha facul só para garantir que nunca vamos ficar sem internet para te responder.",
+  "Prometo valorizar cada gesto do enfermagem que cuida de mim com tanto carinho.",
+  "Prometo maratonar Doctor Who contigo sem dar spoiler e discutir teorias conspiratórias até dormir.",
+  "Prometo cozinhar seu prato preferido depois de um dia dificil.",
+  "Prometo enviar memes de madrugada para te arrancar um sorriso antes de dormir.",
+  "Prometo fazer piadinha boba e ser cúmplice das suas risadas mais escandalosas.",
+  "Prometo assumir o controle do controle remoto só para você escolher o filme no final.",
+  "Prometo escrever bilhetes secretos lembrando o quanto você é incrível (e que sou fã número 1).",
+  "Prometo te abraçar forte toda vez que você disser ‘tô cansado’.",
+  "Prometo guardar nossos melhores momentos no coração.",
+  "Prometo te amar mesmo quando você pegar Lux suporte e roubar todas as kills com a ult ks dos deuses.",
+  "Prometo tentar jogar bem de Nilah… ou pelo menos não te dar dor de cabeça quando feedar sem querer.",
+  "Prometo carregar as partidas de Samira e ainda dizer que foi você quem brilhou de Soraka.",
+  "Prometo não reclamar (muito) quando a Lux não buildar suporte e sim tank e fizer mais dano que eu ADC.",
+  "Prometo que, mesmo quando você me deixar na lane pra salvar um random, eu te perdoo… talvez.",
+  "Prometo rir com você, mesmo quando a gente tomar ace aos 8 minutos porque eu fui divear level 2 de Samira.",
+  "Prometo ficar do seu lado nas ranqueadas da vida e nas filas normais do amor.",
+  "Prometo te dar o blue... às vezes.",
+  "Prometo não tiltar quando você pegar Soraka e ultar os outros.",
+  "Prometo te honrar no fim da partida (e na vida), mesmo quando você só cura minion.",
+  "Prometo que você sempre vai ser meu duo preferido — com ou sem kill roubada.",
+  "Prometo que juntos vamos vencer todas as partidas difíceis, inclusive a da segunda-feira cedo.",
+  "Prometo que, se um dia virarmos personagem de Black Mirror, vamos ser aqueles que se reencontram no final.",
+  "Prometo ser seu buff constante, mesmo sem barão no mapa.",
+  "Prometo cuidar de você como cuido do meu KDA… ou melhor, porque com Nilah isso não é exemplo.",
+  "Prometo que nosso amor vai ser mais forte que ult da Samira com todos no range.",
+  "Prometo que nosso relacionamento nunca vai ser igual o matchmaking do LoL — vai fazer sentido.",
+];
+
+    function newVoto(){ document.getElementById('voto-text').textContent = votos[Math.floor(Math.random()*votos.length)]; }
+  </script>
+</body>
+</html>

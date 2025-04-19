@@ -1,0 +1,203 @@
+<!-- templates/playlists.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Efeito de corações pulando */
+    @keyframes heart-rise {
+      0% { opacity:1; transform: translateY(0) scale(1); }
+      100% { opacity:0; transform: translateY(-100px) scale(1.5); }
+    }
+    .heart {
+      position: absolute; color: #f472b6; font-size: 1.5rem;
+      animation: heart-rise 1s ease-out forwards; pointer-events: none;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-white bg-opacity-70 shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <nav class="bg-pink-100 text-pink-900 px-6 py-4 flex justify-between items-center shadow">
+                <div class="text-2xl font-bold">💌 Nosso Cantinho</div>
+                <div class="flex gap-2 items-center">
+                  <button onclick="previousMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏮</button>
+                  <button onclick="startMusic()" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full shadow text-white font-semibold text-sm">Tocar nossa música 💖</button>
+                  <button onclick="nextMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏭</button>
+                </div>
+              </nav>          
+          <ul class="flex space-x-4 text-pink-700 font-medium">
+            <li><a href="/" class="hover:underline">Início</a></li>
+            <li><a href="/linha-do-tempo" class="hover:underline font-semibold">Linha do Tempo</a></li>
+            <li><a href="/cartas" class="hover:underline">Cartas</a></li>
+            <li><a href="/playlists" class="hover:underline">Playlists</a></li>
+            <li><a href="/nosso-futuro" class="hover:underline">Nosso Futuro</a></li>
+          </ul>
+        </nav>
+      </header>
+
+  <main class="flex-grow space-y-32">
+
+    <!-- 1) Seção Beijo -->
+    <section id="beijo" class="min-h-screen py-20 flex flex-col justify-center items-center bg-gray-100 px-6 relative overflow-hidden">
+      <h2 class="text-4xl font-bold mb-6">💋 Memórias de Beijo</h2>
+      <div id="beijo-media" class="w-full max-w-xl mb-6">
+        <img src="{{ url_for('static', filename='bg/bjo1.jpg') }}" alt="Beijo 1" class="rounded-lg shadow-lg w-full max-h-[70vh] object-contain">
+      </div>
+      <button onclick="nextBeijo()" class="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-full font-medium shadow">
+        Próxima Foto 💋
+      </button>
+    </section>
+  
+    <!-- 2) Seção Minecraft -->
+    <section id="minecraft" class="min-h-screen py-20 flex flex-col justify-center items-center bg-gray-200 px-6 relative overflow-hidden">
+      <h2 class="text-4xl font-bold mb-6">🛠️ Aventura Minecraft</h2>
+      <div id="minecraft-media" class="w-full max-w-xl mb-6">
+        <img src="{{ url_for('static', filename='bg/mine1.png') }}" alt="Mine 1" class="rounded-lg shadow-lg w-full max-h-[70vh] object-contain">
+      </div>
+      <button onclick="nextMinecraft()" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-medium shadow">
+        Próxima Imagem 🪓
+      </button>
+    </section>
+  
+    <!-- 3) Seção Momentos -->
+    <section id="momentos" class="min-h-screen py-20 flex flex-col justify-center items-center bg-gray-300 px-6 relative overflow-hidden">
+      <h2 class="text-4xl font-bold mb-6">📸 Momentos Inesquecíveis</h2>
+      <div id="momentos-media" class="w-full max-w-xl mb-6">
+        <img src="{{ url_for('static', filename='bg/cena1.jpg') }}" alt="Cena 1" class="rounded-lg shadow-lg w-full max-h-[70vh] object-contain">
+      </div>
+      <button onclick="nextMomentos()" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-full font-medium shadow">
+        Próximo Momento 🌟
+      </button>
+    </section>
+  
+    <!-- 4) Seção Memes -->
+    <section id="memes" class="min-h-screen py-20 flex flex-col justify-center items-center bg-gray-400 px-6 relative overflow-hidden">
+      <h2 class="text-4xl font-bold mb-6">😂 Memes Internos</h2>
+      <div id="memes-media" class="w-full max-w-xl mb-6">
+        <img src="{{ url_for('static', filename='bg/meme1.jpg') }}" alt="Meme 1" class="rounded-lg shadow-lg w-full max-h-[70vh] object-contain" id="memes-ele">
+      </div>
+      <button onclick="nextMemes()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-full font-medium shadow">
+        Próximo Meme 🤣
+      </button>
+    </section>
+  
+  </main>
+  
+
+  <footer class="text-center py-6 text-sm text-gray-600 bg-pink-50">
+    Cada clique revela um novo capítulo do nosso amor. Te amo! 💖
+  </footer>
+
+  <!-- Player de música -->
+  <audio id="bg-player"></audio>
+
+  <script>
+    // lista de URLs estáticas para cada seção
+    const beijoList = {{ [
+      url_for('static', filename='bg/bjo1.jpg'),
+      url_for('static', filename='bg/bjo2.jpg'),
+      url_for('static', filename='bg/bjo3.jpg'),
+      url_for('static', filename='bg/bjo4.jpg'),
+      url_for('static', filename='bg/bjo5.jpg')
+    ]|tojson }};
+    const mineList = {{ [
+      url_for('static', filename='bg/mine1.png'),
+      url_for('static', filename='bg/mine2.png'),
+      url_for('static', filename='bg/mine3.jpg'),
+      url_for('static', filename='bg/mine4.jpg'),
+      url_for('static', filename='bg/mine5.jpg')
+    ]|tojson }};
+    const cenaList = {{ [
+      url_for('static', filename='bg/cena1.jpg'),
+      url_for('static', filename='bg/cena2.jpg'),
+      url_for('static', filename='bg/cena3.jpg'),
+      url_for('static', filename='bg/cena4.jpg'),
+      url_for('static', filename='bg/cena5.jpg')
+    ]|tojson }};
+    const memeList = {{ [
+      url_for('static', filename='bg/meme1.jpg'),
+      url_for('static', filename='bg/meme2.jpg'),
+      url_for('static', filename='bg/meme3.mp4'),
+      url_for('static', filename='bg/meme4.mp4')
+    ]|tojson }};
+
+    // índices
+    let iBeijo = 0, iMine = 0, iCena = 0, iMeme = 0;
+
+    // efeitos
+    function burstHearts(sectionId) {
+      const sec = document.getElementById(sectionId);
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = (Math.random()*80 + 10) + '%';
+        heart.style.bottom = '20px';
+        heart.textContent = '❤️';
+        sec.appendChild(heart);
+        setTimeout(()=> heart.remove(), 1000);
+      }
+    }
+
+    // funções de troca de mídia
+    function nextBeijo() {
+      iBeijo = (iBeijo + 1) % beijoList.length;
+      document.querySelector('#beijo-media img').src = beijoList[iBeijo];
+      burstHearts('beijo');
+    }
+    function nextMinecraft() {
+      iMine = (iMine + 1) % mineList.length;
+      document.querySelector('#minecraft-media img').src = mineList[iMine];
+      document.getElementById('minecraft').classList.add('animate-pulse');
+      setTimeout(()=> document.getElementById('minecraft').classList.remove('animate-pulse'), 500);
+    }
+    function nextMomentos() {
+      iCena = (iCena + 1) % cenaList.length;
+      document.querySelector('#momentos-media img').src = cenaList[iCena];
+      document.getElementById('momentos').classList.add('scale-105','transition-transform','duration-500');
+      setTimeout(()=> document.getElementById('momentos').classList.remove('scale-105'), 500);
+    }
+    function nextMemes() {
+      iMeme = (iMeme + 1) % memeList.length;
+      const ele = document.getElementById('memes-ele');
+      const url = memeList[iMeme];
+      // se for vídeo, troca <img> por <video>
+      if (url.endsWith('.mp4')) {
+        const vid = document.createElement('video');
+        vid.src = url; vid.autoplay = true; vid.loop = true; vid.muted = true;
+        vid.className = ele.className; vid.id = ele.id;
+        ele.replaceWith(vid);
+      } else {
+        // volta para imagem
+        const img = document.createElement('img');
+        img.src = url; img.alt = 'Meme'; 
+        img.className = 'rounded-lg shadow-lg w-full'; 
+        img.id = 'memes-ele';
+        document.querySelector('#memes-media').firstChild.replaceWith(img);
+      }
+      document.getElementById('memes').classList.add('animate-bounce');
+      setTimeout(()=> document.getElementById('memes').classList.remove('animate-bounce'), 500);
+    }
+
+    // player global
+    const playlist = {{ audio_playlist | tojson }};
+    let idx = parseInt(localStorage.getItem('audioIndex')||0);
+    let time = parseFloat(localStorage.getItem('audioTime')||0);
+    const player = document.getElementById('bg-player');
+    function startMusic() {
+      player.src = playlist[idx]; player.currentTime = time; player.play().catch(()=>{});
+    }
+    function nextMusic(){ idx=(idx+1)%playlist.length; player.src=playlist[idx]; player.play(); }
+    function previousMusic(){ idx=(idx-1+playlist.length)%playlist.length; player.src=playlist[idx]; player.play(); }
+    player.addEventListener('ended', nextMusic);
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('audioIndex', idx);
+      localStorage.setItem('audioTime', player.currentTime);
+    });
+  </script>
+</body>
+</html>

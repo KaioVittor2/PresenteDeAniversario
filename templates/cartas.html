@@ -1,0 +1,202 @@
+<!-- templates/cartas.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilo do envelope */
+    .envelope {
+      width: 150px;
+      height: 100px;
+      background: #fff0f6;
+      border: 2px solid #f9c2d1;
+      border-radius: 8px 8px 2px 2px;
+      position: relative;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .envelope:hover {
+      transform: translateY(-4px);
+    }
+    .envelope::before {
+      content: '';
+      position: absolute;
+      top: -10px; left: 0; right: 0;
+      margin: 0 auto;
+      border-left: 75px solid transparent;
+      border-right: 75px solid transparent;
+      border-bottom: 20px solid #fff0f6;
+    }
+    /* Carta escondida */
+    .letter {
+      display: none;
+      background: rgba(255,255,255,0.9);
+      padding: 1rem;
+      border-radius: .5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: 1rem auto;
+      font-style: italic;
+      color: #4a4a4a;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-pink-50">
+    
+  <!-- Navbar compartilhada -->
+  <header class="bg-white bg-opacity-70 shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="bg-pink-100 text-pink-900 px-6 py-4 flex justify-between items-center shadow">
+            <div class="text-2xl font-bold">💌 Nosso Cantinho</div>
+            <div class="flex gap-2 items-center">
+              <button onclick="previousMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏮</button>
+              <button onclick="startMusic()" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full shadow text-white font-semibold text-sm">Tocar nossa música 💖</button>
+              <button onclick="nextMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏭</button>
+            </div>
+          </nav>          
+      <ul class="flex space-x-4 text-pink-700 font-medium">
+        <li><a href="/" class="hover:underline">Início</a></li>
+        <li><a href="/linha-do-tempo" class="hover:underline font-semibold">Linha do Tempo</a></li>
+        <li><a href="/cartas" class="hover:underline">Cartas</a></li>
+        <li><a href="/playlists" class="hover:underline">Playlists</a></li>
+        <li><a href="/nosso-futuro" class="hover:underline">Nosso Futuro</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="flex-grow container mx-auto px-6 py-12">
+    <h2 class="text-4xl text-pink-700 font-bold text-center mb-8">Cartas para você</h2>
+    <p class="text-center text-gray-700 mb-12">
+      Em cada envelope, uma pequena declaração do meu amor, de momentos que me fazem sorrir toda vez que penso em nós.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
+      <!-- Exemplo de envelope + carta -->
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-1"></div>
+        <div id="letter-1" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 1</h3>
+          <p>
+            Meu amor, você é a luz que ilumina meus dias. Cada momento ao seu lado é especial. 💖
+            agradeço por ser quem você é. Você me faz querer ser uma pessoa melhor a cada dia.
+            Você é minha inspiração, meu apoio e meu amor. Não consigo imaginar minha vida sem você.
+            Você é a razão do meu sorriso todos os dias. Te amo mais do que palavras podem expressar. ❤️
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-2"></div>
+        <div id="letter-2" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 2</h3>
+          <p>
+            Você é a razão do meu sorriso e a paz do meu coração. 💕
+            Cada dia ao seu lado é uma nova aventura, e eu não trocaria isso por nada. 🌈
+            Nunca me canso de te admirar. Seu sorriso bobo e seu olhar sincero me fazem sentir tão amado.
+            Cada momento ao seu lado é um presente que guardo no coração. Obrigado por ser você. 💖
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-3"></div>
+        <div id="letter-3" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 3</h3>
+          <p>
+            Te amar é a melhor coisa que já me aconteceu. Você é meu porto seguro. ⚓
+            Cada dia ao seu lado é uma nova oportunidade de amar e ser amado. 💞
+            Me sinto tão sortudo por ter você na minha vida. 
+            Quando penso no futuro, só consigo imaginar nós dois juntos, construindo nossos sonhos. 🌟
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-4"></div>
+        <div id="letter-4" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 4</h3>
+          <p>
+            Não seria a mesma pessoa sem você. Você me completa de uma forma que eu nunca imaginei ser possível. 💞
+            Você é meu melhor amigo, meu amor e minha inspiração.
+            Cada dia ao seu lado eu descubro algo novo que me faz te amar ainda mais.
+            Seu abraço é o meu lugar favorito no mundo. Nunca quero sair dele. 🤗
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-5"></div>
+        <div id="letter-5" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 5</h3>
+          <p>
+            Te descobrir foi como encontrar a peça que faltava no meu quebra-cabeça. 🧩
+            Quando te vejo sorrir, meu coração se enche de alegria.
+            Quando estamos juntos, o tempo voa e tudo parece perfeito.
+            Você é a melodia que dá ritmo à minha vida. Obrigado por ser minha música favorita. 🎶
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-col items-center">
+        <div class="envelope" data-letter="letter-6"></div>
+        <div id="letter-6" class="letter">
+          <h3 class="text-xl font-semibold text-pink-600 mb-2">Carta 6</h3>
+          <p>
+            Ter te escolhido como meu amor foi a melhor decisão da minha vida. 💖
+            Hoje, seu aniversario, quero te lembrar de como você é especial para mim.
+            Que seu dia seja repleto de amor, alegria e sorrisos.
+            Você merece tudo de bom que a vida tem a oferecer. 🌟
+            Não importa o que aconteça, sempre estarei ao seu lado, te apoiando e te amando. 💪❤️
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-600">
+    Cada carta foi feita pensando em você. Te amo infinitamente! 💖
+  </footer>
+
+  <!-- Player invisível e script de áudio (já injetados via context_processor) -->
+  <audio id="bg-player"></audio>
+  <script>
+    const playlist = {{ audio_playlist | tojson }};
+    let idx = parseInt(localStorage.getItem('audioIndex') || 0);
+    let time = parseFloat(localStorage.getItem('audioTime') || 0);
+    const player = document.getElementById('bg-player');
+
+    function startMusic() {
+      player.src = playlist[idx];
+      player.currentTime = time;
+      player.play().catch(() => {});
+    }
+    function nextMusic() {
+      idx = (idx + 1) % playlist.length;
+      player.src = playlist[idx];
+      player.play();
+    }
+    function previousMusic() {
+      idx = (idx - 1 + playlist.length) % playlist.length;
+      player.src = playlist[idx];
+      player.play();
+    }
+    player.addEventListener('ended', nextMusic);
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('audioIndex', idx);
+      localStorage.setItem('audioTime', player.currentTime);
+    });
+
+    // Interatividade dos envelopes
+    document.querySelectorAll('.envelope').forEach(env => {
+      env.addEventListener('click', () => {
+        const id = env.getAttribute('data-letter');
+        const letter = document.getElementById(id);
+        // alterna visibilidade
+        letter.style.display = letter.style.display === 'block' ? 'none' : 'block';
+        // rola até a carta
+        if (letter.style.display === 'block') {
+          letter.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

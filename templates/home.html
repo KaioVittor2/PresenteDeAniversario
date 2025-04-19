@@ -1,0 +1,102 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url("static/fotos/NósSendoLindos.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+    .bg-overlay {
+      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Player invisível -->
+    <audio id="bg-player"></audio>
+
+<script>
+  const playlist = {{ audio_playlist | tojson }};
+  let idx = parseInt(localStorage.getItem('audioIndex') || 0);
+  let time = parseFloat(localStorage.getItem('audioTime') || 0);
+  const player = document.getElementById('bg-player');
+
+  function startMusic() {
+    player.src = playlist[idx];
+    player.currentTime = time;
+    player.play().catch((err) => {
+      console.error('Erro ao tocar música:', err);
+    });
+  }
+
+  function nextMusic() {
+    idx = (idx + 1) % playlist.length;
+    player.src = playlist[idx];
+    player.play();
+  }
+
+  function previousMusic() {
+    idx = (idx - 1 + playlist.length) % playlist.length;
+    player.src = playlist[idx];
+    player.play();
+  }
+
+  player.addEventListener('ended', () => {
+    nextMusic();
+  });
+
+  window.addEventListener('beforeunload', () => {
+    localStorage.setItem('audioIndex', idx);
+    localStorage.setItem('audioTime', player.currentTime);
+  });
+</script>
+
+    
+    <!-- resto do body... -->
+
+    
+    
+  <header class="bg-white bg-opacity-70 shadow-md sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <nav class="bg-pink-100 text-pink-900 px-6 py-4 flex justify-between items-center shadow">
+        <div class="text-2xl font-bold">💌 Nosso Cantinho</div>
+        <div class="flex gap-2 items-center">
+          <button onclick="previousMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏮</button>
+          <button onclick="startMusic()" class="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-full shadow text-white font-semibold text-sm">Tocar nossa música 💖</button>
+          <button onclick="nextMusic()" class="bg-pink-300 hover:bg-pink-400 px-3 py-1 rounded-full text-sm shadow">⏭</button>
+        </div>
+      </nav>      
+      <ul class="flex space-x-4 text-pink-700 font-medium">
+        <li><a href="/" class="hover:underline">Início</a></li>
+        <li><a href="/linha-do-tempo" class="hover:underline">Linha do Tempo</a></li>
+        <li><a href="/cartas" class="hover:underline">Cartas</a></li>
+        <li><a href="/playlists" class="hover:underline">Playlists</a></li>
+        <li><a href="/nosso-futuro" class="hover:underline">Nosso Futuro</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="flex-grow container mx-auto px-6 py-12 bg-overlay rounded-xl mt-6 shadow-lg">
+    <div class="text-center">
+      <h2 class="text-4xl font-bold text-pink-800 mb-4">Feliz Aniversário, meu amor!</h2>
+      <p class="text-lg text-gray-800 mb-6 max-w-xl mx-auto">
+        Este é um cantinho só nosso, feito com carinho, com cada pedacinho da nossa história.
+        Aqui você vai encontrar lembranças, palavras, músicas e sonhos... Tudo que constrói o nosso amor.
+      </p>
+      <p class="text-pink-700 text-xl font-medium italic">Você é o meu lugar favorito no mundo.</p>
+    </div>
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-600">
+    Feito com muito amor por você.
+  </footer>
+
+</body>
+</html>
