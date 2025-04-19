@@ -1,0 +1,12 @@
+Flask==2.3.2
+Flask-SocketIO==5.3.4
+eventlet==0.33.3  # necessário para WebSocket com SocketIO no Render
+gunicorn==21.2.0  # servidor WSGI para produção
+
+
+opencv-python==4.9.0.80  # (caso use para efeitos visuais ou pré-processamento)
+
+python-dotenv==1.0.1  # para variáveis de ambiente
+
+# Para manipular vídeos (se necessário):
+moviepy==1.0.3  # caso use alguma edição de vídeo no servidor
